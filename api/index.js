@@ -5,6 +5,7 @@ const cors = require("cors");
 
 // Routers
 const authRouter = require("./routes/auth");
+const shoeRouter = require("./routes/shoe");
 
 const app = express();
 const corsOptions = {
@@ -27,6 +28,7 @@ dotenv.config();
 app.use(express.json());
 app.use(cors(corsOptions));
 app.use("/api/v1/auth", authRouter);
+app.use("/api/v1/shoe", shoeRouter);
 
 app.listen(process.env.PORT, () => {
   connectDb();

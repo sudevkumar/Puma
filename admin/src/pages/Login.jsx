@@ -9,7 +9,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [showPass, setShowPass] = useState(false);
   const navigate = useNavigate();
-  const { user, setUser, getUser } = useContext(UserContext);
+  const { getUser } = useContext(UserContext);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -29,12 +29,12 @@ const Login = () => {
 
     try {
       const res = await axios.post(
-        "http://localhost:5050/api/v1/auth/login",
+        "http://localhost:5050/api/v1/auth/loginpuma",
         payload
       );
       toast.success("Login Successfull!");
       navigate("/");
-      localStorage.setItem("puma-data", JSON.stringify(res?.data));
+      localStorage.setItem("puma-data-admin", JSON.stringify(res?.data));
       getUser();
       console.log(res);
     } catch (error) {
@@ -100,7 +100,7 @@ const Login = () => {
 
           <strong>
             Don't have an acount?{" "}
-            <Link to={"/register"}>
+            <Link to={"/registerpuma"}>
               <span className=" text-blue-500 underline cursor-pointer">
                 Register
               </span>

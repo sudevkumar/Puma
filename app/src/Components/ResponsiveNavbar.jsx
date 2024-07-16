@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { FiSearch } from "react-icons/fi";
 import { GoHeartFill } from "react-icons/go";
 import { BsFillCartFill } from "react-icons/bs";
@@ -6,14 +6,25 @@ import { FaUserAlt } from "react-icons/fa";
 import { RxHamburgerMenu, RxCross1 } from "react-icons/rx";
 import { navBar } from "../utils";
 import { Link } from "react-router-dom";
+import { UserContext } from "../context/context";
+import { toast } from "react-toastify";
 
 const ResponsiveNavbar = () => {
   const [search, setsearch] = useState("");
   const [open, setOpen] = useState(false);
+  const { user, setUser, getUser } = useContext(UserContext);
+
   const handleSearch = () => {
     console.log(search);
     alert(search);
   };
+
+  const handleLogOut = () => {
+    localStorage.removeItem("puma-data");
+    toast.success("See you soon!");
+    getUser();
+  };
+
   return (
     <>
       <nav className=" w-full h-[70px] bg-black flex fixed lg:hidden">
@@ -69,7 +80,23 @@ const ResponsiveNavbar = () => {
                 1
               </div>
             </div>
-            <FaUserAlt fill="white" size={25} className="cursor-pointer" />
+            {user === null ? (
+              <FaUserAlt fill="white" size={25} className="cursor-pointer" />
+            ) : (
+              <>
+                <div className=" w-[40px] h-[40px] bg-white rounded-full">
+                  <img
+                    src={
+                      user?.user?.userimg
+                        ? user?.user?.userimg
+                        : "https://uxwing.com/wp-content/themes/uxwing/download/peoples-avatars/no-profile-picture-icon.png"
+                    }
+                    alt={user.user.username}
+                    className=" rounded-full w-full h-full object-cover"
+                  />
+                </div>
+              </>
+            )}
           </div>
           <div
             className=" w-[38px] h-[38px] rounded-md border border-white flex justify-center items-center"
@@ -84,12 +111,10 @@ const ResponsiveNavbar = () => {
         <div className=" flex flex-col w-full text-white">
           <ul>
             {navBar.map((nav, i) => (
-              <>
-                <li className=" text-[19px] m-4" key={i}>
-                  {nav}
-                </li>
+              <div key={i}>
+                <li className=" text-[19px] m-4">{nav}</li>
                 <hr />
-              </>
+              </div>
             ))}
           </ul>
         </div>
@@ -98,9 +123,15 @@ const ResponsiveNavbar = () => {
           className=" w-[90%] mt-2 mb-4 mx-auto"
           onClick={() => setOpen(false)}
         >
-          <Link to={"/login"}>
-            <button className=" w-full p-2 bg-white">Login</button>
-          </Link>
+          {user === null ? (
+            <Link to={"/login"}>
+              <button className=" w-full p-2 bg-white">Login</button>
+            </Link>
+          ) : (
+            <button className=" w-full p-2 bg-white" onClick={handleLogOut}>
+              Logout
+            </button>
+          )}
         </div>
       </div>
     </>

@@ -1,13 +1,18 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { navBar } from "../utils";
 import { FiSearch } from "react-icons/fi";
 import { GoHeartFill } from "react-icons/go";
 import { BsFillCartFill } from "react-icons/bs";
 import { FaUserAlt } from "react-icons/fa";
+import { UserContext } from "../context/context";
 
 const Navbar = () => {
   const [search, setsearch] = useState("");
-  const handleSearch = () => {
+  const { user } = useContext(UserContext);
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    setsearch("");
     console.log(search);
     alert(search);
   };
@@ -40,6 +45,7 @@ const Navbar = () => {
           <input
             type="text"
             name=""
+            value={search}
             id=""
             className=" w-[85%] h-full rounded-l-md px-4 outline-none"
             placeholder="Search..."
@@ -56,7 +62,23 @@ const Navbar = () => {
             1
           </div>
         </div>
-        <FaUserAlt fill="white" size={25} className="cursor-pointer" />
+        {user === null ? (
+          <FaUserAlt fill="white" size={25} className="cursor-pointer" />
+        ) : (
+          <>
+            <div className=" w-[50px] h-[50px] bg-white rounded-full">
+              <img
+                src={
+                  user?.user?.userimg
+                    ? user?.user?.userimg
+                    : "https://uxwing.com/wp-content/themes/uxwing/download/peoples-avatars/no-profile-picture-icon.png"
+                }
+                alt={user.user.username}
+                className=" rounded-full w-full h-full object-cover"
+              />
+            </div>
+          </>
+        )}
       </div>
     </nav>
   );
