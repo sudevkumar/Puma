@@ -1,12 +1,8 @@
-import React, { useContext } from "react";
-import { UserContext } from "../context/context";
 import HeroBanner from "../Components/HeroBanner";
 import VideoBannner from "../Components/VideoBannner";
 import ShowShoes from "../Components/ShowShoes";
 
 const Home = () => {
-  //   const { user } = useContext(UserContext);
-  //   console.log(user);
   return (
     <>
       <HeroBanner />

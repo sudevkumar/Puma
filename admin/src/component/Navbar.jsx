@@ -1,11 +1,21 @@
-import React, { useContext } from "react";
+import React from "react";
 import { navBar } from "../utils";
-import { UserContext } from "../context/context";
 import { FaUserAlt } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { clearUser } from "../Redux/userSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
 const Navbar = () => {
-  const { user } = useContext(UserContext);
+  const user = useSelector((state) => state.user.user);
+  const dispatch = useDispatch();
+
+  const handleLogOut = () => {
+    dispatch(clearUser());
+    toast.success("Logged out successfully");
+  };
+
+  console.log(user);
   return (
     <>
       <nav className=" w-full h-[80px] bg-black flex">
@@ -31,10 +41,15 @@ const Navbar = () => {
 
         <div className=" w-[40%] h-full flex justify-center items-center">
           {user === null ? (
-            <FaUserAlt fill="white" size={25} className="cursor-pointer" />
+            <Link to={"/loginpuma"}>
+              <FaUserAlt fill="white" size={25} className="cursor-pointer" />
+            </Link>
           ) : (
             <>
-              <div className=" w-[50px] h-[50px] bg-white rounded-full cursor-pointer">
+              <div
+                className=" w-[50px] h-[50px] bg-white rounded-full cursor-pointer"
+                onClick={handleLogOut}
+              >
                 <img
                   src={
                     user?.user?.userimg

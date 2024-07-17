@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { FiSearch } from "react-icons/fi";
 import { GoHeartFill } from "react-icons/go";
 import { BsFillCartFill } from "react-icons/bs";
@@ -6,13 +6,15 @@ import { FaUserAlt } from "react-icons/fa";
 import { RxHamburgerMenu, RxCross1 } from "react-icons/rx";
 import { navBar } from "../utils";
 import { Link } from "react-router-dom";
-import { UserContext } from "../context/context";
 import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import { clearUser } from "../Redux/userSlice";
 
 const ResponsiveNavbar = () => {
   const [search, setsearch] = useState("");
   const [open, setOpen] = useState(false);
-  const { user, setUser, getUser } = useContext(UserContext);
+  const user = useSelector((state) => state.user.user);
+  const dispatch = useDispatch();
 
   const handleSearch = () => {
     console.log(search);
@@ -20,9 +22,8 @@ const ResponsiveNavbar = () => {
   };
 
   const handleLogOut = () => {
-    localStorage.removeItem("puma-data");
-    toast.success("See you soon!");
-    getUser();
+    dispatch(clearUser());
+    toast.success("Logout successful!");
   };
 
   return (

@@ -6,6 +6,8 @@ import Login from "./pages/Login";
 import Navbar from "./component/Navbar";
 import CreateAShoePost from "./pages/CreateAShoePost";
 import Home from "./pages/Home";
+import PrivateRoute from "./utils/PrivateRoute";
+import UpdateShoe from "./pages/UpdateShoe";
 
 function App() {
   return (
@@ -16,7 +18,23 @@ function App() {
         <Route element={<Register />} path="/registerpuma" />
         <Route element={<Login />} path="/loginpuma" />
         <Route element={<Home />} path="/" />
-        <Route element={<CreateAShoePost />} path="/addnewproduct" />
+        <Route
+          path="/addnewproduct"
+          element={
+            <PrivateRoute>
+              <CreateAShoePost />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/updateproduct/:id"
+          element={
+            <PrivateRoute>
+              <UpdateShoe />
+            </PrivateRoute>
+          }
+        />
       </Routes>
     </div>
   );

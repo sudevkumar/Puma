@@ -1,15 +1,16 @@
 import axios from "axios";
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { UserContext } from "../context/context";
+import { useDispatch } from "react-redux";
+import { setUser } from "../Redux/userSlice";
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPass, setShowPass] = useState(false);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { getUser } = useContext(UserContext);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -34,8 +35,7 @@ const Login = () => {
       );
       toast.success("Login Successfull!");
       navigate("/");
-      localStorage.setItem("puma-data-admin", JSON.stringify(res?.data));
-      getUser();
+      dispatch(setUser(res?.data));
       console.log(res);
     } catch (error) {
       console.log(error?.response?.data);

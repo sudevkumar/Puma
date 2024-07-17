@@ -1,20 +1,29 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { navBar } from "../utils";
 import { FiSearch } from "react-icons/fi";
 import { GoHeartFill } from "react-icons/go";
 import { BsFillCartFill } from "react-icons/bs";
 import { FaUserAlt } from "react-icons/fa";
-import { UserContext } from "../context/context";
+import { useDispatch, useSelector } from "react-redux";
+import userSlice, { clearUser } from "../Redux/userSlice";
+import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Navbar = () => {
   const [search, setsearch] = useState("");
-  const { user } = useContext(UserContext);
+  const user = useSelector((state) => state.user.user);
+  const dispatch = useDispatch();
 
   const handleSearch = (e) => {
     e.preventDefault();
     setsearch("");
     console.log(search);
     alert(search);
+  };
+
+  const handleLogOut = () => {
+    dispatch(clearUser());
+    toast.success("See you soon!");
   };
   return (
     <nav className=" w-[100%] hidden h-[80px] bg-black lg:flex ">
@@ -52,21 +61,36 @@ const Navbar = () => {
             onChange={(e) => setsearch(e.target.value)}
           />
           <button className=" w-[15%] h-full flex justify-center items-center">
-            <FiSearch />
+            <FiSearch title="Search" />
           </button>
         </form>
-        <GoHeartFill fill="white" size={25} className=" cursor-pointer" />
+        <GoHeartFill
+          fill="white"
+          size={25}
+          className=" cursor-pointer"
+          title="Favourites"
+        />
         <div className=" relative cursor-pointer">
-          <BsFillCartFill fill="white" size={25} />
+          <BsFillCartFill fill="white" size={25} title="Cart" />
           <div className=" absolute w-4 h-4 rounded-full bg-red-500 -top-2 -right-1 flex justify-center items-center text-[10px] font-semibold text-white ">
             1
           </div>
         </div>
         {user === null ? (
-          <FaUserAlt fill="white" size={25} className="cursor-pointer" />
+          <Link to={"/login"}>
+            <FaUserAlt
+              fill="white"
+              size={25}
+              className="cursor-pointer"
+              title="Login/Register"
+            />
+          </Link>
         ) : (
           <>
-            <div className=" w-[50px] h-[50px] bg-white rounded-full">
+            <div
+              className=" w-[50px] h-[50px] bg-white rounded-full"
+              onClick={handleLogOut}
+            >
               <img
                 src={
                   user?.user?.userimg

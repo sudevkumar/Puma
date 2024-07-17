@@ -15,3 +15,22 @@ body {
   width: 100%;
   position: relative;
 }
+
+@layer utilities {
+  .animate::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+
+  .animate::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+
+  .animate::-webkit-scrollbar-thumb {
+    background: #888;
+  }
+
+  .animate::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+}

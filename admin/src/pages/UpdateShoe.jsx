@@ -1,9 +1,11 @@
 import axios from "axios";
-import React, { useState, useRef } from "react";
-import { toast } from "react-toastify";
+import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 
-const CreateAShoePost = () => {
+const UpdateShoe = () => {
+  const [shoes, setShoes] = useState({});
   const [title, setTitle] = useState("");
   const [mainImg, setMainImg] = useState("");
   const [subOneImg, setSubOneImg] = useState("");
@@ -18,7 +20,7 @@ const CreateAShoePost = () => {
   const [countryOfOrigin, setCountryOfOrigin] = useState("");
   const [style, setStyle] = useState("");
   const [color, setColor] = useState("");
-
+  const { id } = useParams();
   const user = useSelector((state) => state.user.user);
 
   const mainImageRef = useRef(null);
@@ -27,13 +29,43 @@ const CreateAShoePost = () => {
   const subThreeImageRef = useRef(null);
   const subFourImageRef = useRef(null);
 
-  // Cloudinary upload function
+  // Navigator
+  const navigate = useNavigate();
+
+  const getShoeById = async () => {
+    try {
+      const res = await axios.get(`http://localhost:5050/api/v1/shoe/${id}`);
+      const shoeData = res.data;
+      setShoes(shoeData);
+      setTitle(shoeData.title);
+      setMainImg(shoeData.mainImg);
+      setSubOneImg(shoeData.subOneImg);
+      setSubTwoImg(shoeData.subTwoImg);
+      setSubThreeImg(shoeData.subThreeImg);
+      setSubFourImg(shoeData.subFourImg);
+      setPrice(shoeData.price);
+      setDiscount(shoeData.discount);
+      setFors(shoeData.for);
+      setDesc(shoeData.desc);
+      setProductStory(shoeData.productStory);
+      setCountryOfOrigin(shoeData.countryOfOrigin);
+      setStyle(shoeData.style);
+      setColor(shoeData.color);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    getShoeById();
+  }, []);
+
   const handleImageUpload = async (event, setImage) => {
     const image = event.target.files[0];
     if (image) {
       const formData = new FormData();
       formData.append("file", image);
-      formData.append("upload_preset", "puma app"); // Set your upload preset here
+      formData.append("upload_preset", "puma app");
 
       try {
         const response = await axios.post(
@@ -47,23 +79,8 @@ const CreateAShoePost = () => {
     }
   };
 
-  const handlePostCreate = async (e) => {
+  const handlePostUpdate = async (e) => {
     e.preventDefault();
-    if (!title) return toast.error("Title is required!");
-    if (!mainImg) return toast.error("Main image is required!");
-    if (!subOneImg) return toast.error("Sub one image is required!");
-    if (!subTwoImg) return toast.error("Sub two image is required!");
-    if (!subThreeImg) return toast.error("Sub three image is required!");
-    if (!subFourImg) return toast.error("Sub four image is required!");
-    if (!price) return toast.error("Price is required!");
-    if (!discount) return toast.error("Discount is required!");
-    if (!fors) return toast.error("For is required!");
-    if (!desc) return toast.error("Description is required!");
-    if (!productStory) return toast.error("Product story is required!");
-    if (!countryOfOrigin) return toast.error("Country of origin is required!");
-    if (!style) return toast.error("Style is required!");
-    if (!color) return toast.error("Color is required!");
-
     const payload = {
       title,
       mainImg,
@@ -82,48 +99,25 @@ const CreateAShoePost = () => {
     };
 
     try {
-      const res = await axios.post(
-        "http://localhost:5050/api/v1/shoe/create",
-        payload,
-        {
-          headers: {
-            Authorization: user.token,
-          },
-        }
-      );
+      await axios.patch(`http://localhost:5050/api/v1/shoe/${id}`, payload, {
+        headers: {
+          Authorization: user.token,
+        },
+      });
 
-      toast.success("Post created successfully!");
-
-      setTitle("");
-      setMainImg("");
-      setSubOneImg("");
-      setSubTwoImg("");
-      setSubThreeImg("");
-      setSubFourImg("");
-      setPrice("");
-      setDiscount("");
-      setFors("");
-      setDesc("");
-      setProductStory("");
-      setCountryOfOrigin("");
-      setStyle("");
-      setColor("");
-      // Reset file input elements
-      mainImageRef.current.value = "";
-      subOneImageRef.current.value = "";
-      subTwoImageRef.current.value = "";
-      subThreeImageRef.current.value = "";
-      subFourImageRef.current.value = "";
+      toast.success("Shoe is updated successfully!");
+      navigate("/");
     } catch (error) {
-      console.log(error);
-      toast.error(error?.response?.data?.msg);
+      toast.error("Error updating shoe");
+      console.error(error);
     }
   };
 
   return (
-    <section className="flex justify-center">
-      <form className="w-[70%] h-auto px-10 py-10" onSubmit={handlePostCreate}>
-        <h1 className="text-4xl">Create a new post</h1>
+    <section className="p-[40px] w-full h-auto">
+      <h1 className="text-3xl">Update Product</h1>
+      <form className="w-[70%] h-auto px-10 py-10" onSubmit={handlePostUpdate}>
+        <h1 className="text-4xl">Update Shoe</h1>
         <div className="grid grid-cols-2 gap-5 mt-4">
           <div className="w-full flex flex-col gap-2">
             <label htmlFor="title" className="flex gap-1">
@@ -134,7 +128,6 @@ const CreateAShoePost = () => {
               id="title"
               value={title}
               className="w-[100%] border border-black outline-none px-5 h-[45px]"
-              placeholder="Title"
               onChange={(e) => setTitle(e.target.value)}
             />
           </div>
@@ -153,7 +146,7 @@ const CreateAShoePost = () => {
 
           <div className="w-full flex flex-col gap-2">
             <label htmlFor="subOneImg" className="flex gap-1">
-              Sub Picture 1<span className="text-red-500">*</span>
+              Sub Picture 1
             </label>
             <input
               type="file"
@@ -165,7 +158,7 @@ const CreateAShoePost = () => {
 
           <div className="w-full flex flex-col gap-2">
             <label htmlFor="subTwoImg" className="flex gap-1">
-              Sub Picture 2<span className="text-red-500">*</span>
+              Sub Picture 2
             </label>
             <input
               type="file"
@@ -177,7 +170,7 @@ const CreateAShoePost = () => {
 
           <div className="w-full flex flex-col gap-2">
             <label htmlFor="subThreeImg" className="flex gap-1">
-              Sub Picture 3<span className="text-red-500">*</span>
+              Sub Picture 3
             </label>
             <input
               type="file"
@@ -189,7 +182,7 @@ const CreateAShoePost = () => {
 
           <div className="w-full flex flex-col gap-2">
             <label htmlFor="subFourImg" className="flex gap-1">
-              Sub Picture 4<span className="text-red-500">*</span>
+              Sub Picture 4
             </label>
             <input
               type="file"
@@ -208,7 +201,6 @@ const CreateAShoePost = () => {
               id="price"
               value={price}
               className="w-[100%] border border-black outline-none px-5 h-[45px]"
-              placeholder="Price"
               onChange={(e) => setPrice(e.target.value)}
             />
           </div>
@@ -222,7 +214,6 @@ const CreateAShoePost = () => {
               id="discount"
               value={discount}
               className="w-[100%] border border-black outline-none px-5 h-[45px]"
-              placeholder="Discount"
               onChange={(e) => setDiscount(e.target.value)}
             />
           </div>
@@ -241,8 +232,6 @@ const CreateAShoePost = () => {
               <option value="Men">Men</option>
               <option value="Women">Women</option>
               <option value="Kid">Kid</option>
-              <option value="Motorsport">Motorsport</option>
-              <option value="Sports">Sports</option>
             </select>
           </div>
 
@@ -269,7 +258,6 @@ const CreateAShoePost = () => {
               id="productStory"
               value={productStory}
               className="w-[100%] border border-black outline-none px-5 h-[45px]"
-              placeholder="Product Story"
               onChange={(e) => setProductStory(e.target.value)}
             />
           </div>
@@ -283,7 +271,6 @@ const CreateAShoePost = () => {
               id="countryOfOrigin"
               value={countryOfOrigin}
               className="w-[100%] border border-black outline-none px-5 h-[45px]"
-              placeholder="Country Of Origin"
               onChange={(e) => setCountryOfOrigin(e.target.value)}
             />
           </div>
@@ -299,7 +286,7 @@ const CreateAShoePost = () => {
               name=""
               id=""
               className=" w-[100%] border border-black outline-none px-5 h-[45px]"
-              placeholder="Style"
+              placeholder={"Style" || shoes.style}
               onChange={(e) => setStyle(e.target.value)}
             />
           </div>
@@ -315,7 +302,7 @@ const CreateAShoePost = () => {
               value={color}
               id=""
               className=" w-[100%] border border-black outline-none px-5 h-[45px]"
-              placeholder="Color"
+              placeholder={"Color" || shoes?.color}
               onChange={(e) => setColor(e.target.value)}
             />
           </div>
@@ -329,4 +316,4 @@ const CreateAShoePost = () => {
   );
 };
 
-export default CreateAShoePost;
+export default UpdateShoe;

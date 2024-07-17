@@ -10,6 +10,8 @@ const ShoeSchema = new mongoose.Schema(
     subFourImg: { type: String, require: true },
     price: { type: String, require: true },
     discount: { type: String, require: true },
+    type: { type: String, require: true },
+    desc: { type: String, require: true },
     productStory: { type: String, require: true },
     countryOfOrigin: { type: String, require: true },
     style: { type: String, require: true },
