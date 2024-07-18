@@ -18,18 +18,31 @@ router.post("/create", verifyToken, async (req, res) => {
 // Get All Shoes
 
 router.get("/", async (req, res) => {
-  const query = req.query;
   try {
-    const searchFilter = {
-      title: { $regex: query.search, $options: "i" },
-    };
-    const shoe = await Shoe.find(query.search ? searchFilter : null).sort({
+    const shoe = await Shoe.find().sort({
       createdAt: -1,
     });
     res.status(200).json(shoe);
   } catch (error) {
     res.status(500).json(error);
     console.log(error);
+  }
+});
+
+// Filter
+router.get("/search", async (req, res) => {
+  const query = req.query;
+  let filter = {};
+
+  Object.keys(query).forEach((key) => {
+    filter[key] = { $regex: new RegExp(query[key], "i") }; // 'i' makes it case-insensitive
+  });
+
+  try {
+    const shoes = await Shoe.find(filter);
+    res.status(200).json(shoes);
+  } catch (err) {
+    res.status(500).json({ message: "Error fetching shoes", error: err });
   }
 });
 

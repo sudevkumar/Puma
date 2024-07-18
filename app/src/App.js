@@ -8,6 +8,7 @@ import ResponsiveNavbar from "./Components/ResponsiveNavbar";
 import Home from "./Pages/Home";
 import Footer from "./Components/Footer";
 import Secure from "./Redux/Secure";
+import SingleShoe from "./Pages/SingleShoe";
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
           path="/login"
         />
         <Route element={<Home />} path="/" />
+        <Route element={<SingleShoe />} path="/singleshoe/:id" />
       </Routes>
       <Footer />
     </div>

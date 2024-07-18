@@ -5,7 +5,7 @@ import { GoHeartFill } from "react-icons/go";
 import { BsFillCartFill } from "react-icons/bs";
 import { FaUserAlt } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-import userSlice, { clearUser } from "../Redux/userSlice";
+import { clearUser } from "../Redux/userSlice";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 

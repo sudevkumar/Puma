@@ -59,3 +59,16 @@ export const account = [
   "Store Locator",
   "PUMA Articles",
 ];
+
+export const sizes = [
+  "UK 3",
+  "UK 4",
+  "UK 5",
+  "UK 6",
+  "UK 7",
+  "UK 8",
+  "UK 9",
+  "UK 10",
+];
+
+export const quantity = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];

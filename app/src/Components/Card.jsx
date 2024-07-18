@@ -2,7 +2,7 @@ import React from "react";
 import ImageSlider from "./ImageSlider";
 import { calculateDiscountedPrice, formatToINR } from "../utils";
 
-const Card = ({ shoe }) => {
+const Card = ({ shoe, showNav }) => {
   return (
     <div key={shoe._id} className=" w-[400px] h-[400px] inline-block p-3">
       <ImageSlider
@@ -14,6 +14,7 @@ const Card = ({ shoe }) => {
           shoe?.subFourImg,
         ]}
         discount={shoe?.discount}
+        showNav={showNav}
       />
       {shoe.title.length > 30 ? (
         <p className=" text-[18px] font-semibold">

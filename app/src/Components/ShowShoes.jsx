@@ -1,14 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { MdChevronLeft, MdChevronRight } from "react-icons/md";
-import axios from "axios";
+
 import Card from "./Card";
+import { Link } from "react-router-dom";
 
-const ShowShoes = () => {
-  const [shoes, setShoes] = useState([]);
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const totalSlides = shoes.length;
-  const slidesToShow = 3;
-
+const ShowShoes = ({ shoes, compTitle }) => {
   const leftSlider = () => {
     var slider = document.getElementById("slider");
     slider.scrollLeft = slider.scrollLeft - 400;
@@ -19,22 +15,9 @@ const ShowShoes = () => {
     slider.scrollLeft = slider.scrollLeft + 400;
   };
 
-  const getAllShoes = async () => {
-    try {
-      const res = await axios.get("http://localhost:5050/api/v1/shoe");
-      setShoes(res?.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    getAllShoes();
-  }, []);
-
   return (
     <section className=" w-[97%] h-auto mx-auto mb-10">
-      <h1 className=" text-3xl font-semibold">PUMA SPOTLIGHT</h1>
+      <h1 className=" text-3xl font-semibold">{compTitle}</h1>
       <div className=" w-full relative flex items-center mt-5 ">
         <div className=" w-[40px] h-[40px] flex justify-center items-center rounded-full cursor-pointer bg-black bg-opacity-15">
           <MdChevronLeft size={33} onClick={leftSlider} />
@@ -43,8 +26,10 @@ const ShowShoes = () => {
           id="slider"
           className="animate w-full h-full overflow-x-scroll scroll whitespace-nowrap scroll-smooth"
         >
-          {shoes.map((shoe) => (
-            <Card shoe={shoe} />
+          {shoes?.slice(0, 7).map((shoe) => (
+            <Link to={`/singleshoe/${shoe._id}`}>
+              <Card shoe={shoe} showNav={false} />
+            </Link>
           ))}
         </div>
         <div className=" w-[40px] h-[40px] flex justify-center items-center rounded-full cursor-pointer bg-black bg-opacity-15">
