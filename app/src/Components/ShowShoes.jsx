@@ -27,7 +27,7 @@ const ShowShoes = ({ shoes, compTitle }) => {
           className="animate w-full h-full overflow-x-scroll scroll whitespace-nowrap scroll-smooth"
         >
           {shoes?.slice(0, 7).map((shoe) => (
-            <Link to={`/singleshoe/${shoe._id}`}>
+            <Link to={`/singleshoe/${shoe?._id}`}>
               <Card shoe={shoe} showNav={false} />
             </Link>
           ))}
