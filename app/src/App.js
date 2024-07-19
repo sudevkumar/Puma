@@ -9,6 +9,7 @@ import Home from "./Pages/Home";
 import Footer from "./Components/Footer";
 import Secure from "./Redux/Secure";
 import SingleShoe from "./Pages/SingleShoe";
+import ShowWithDiscount from "./Pages/ShowWithDiscount";
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
         />
         <Route element={<Home />} path="/" />
         <Route element={<SingleShoe />} path="/singleshoe/:id" />
+        <Route element={<ShowWithDiscount />} path="/showwithdiscount/:id" />
       </Routes>
       <Footer />
     </div>

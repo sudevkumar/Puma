@@ -1,13 +1,24 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import ImageContainer from "../Components/ImageContainer";
 import ProductDetails from "../Components/ProductDetails";
 import ShowShoes from "../Components/ShowShoes";
+import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import { CartContext } from "../context/CartContext";
 
 const SingleShoe = () => {
   const [shoes, setShoes] = useState({});
+  const [cart, setCart] = useState([]);
+  const [cartFlag, setCartFlag] = useState(false);
+  const [similarShoes, setSimilarShoes] = useState([]);
+  const [size, setSize] = useState("UK 3");
+  const [qty, setQty] = useState("");
   const { id } = useParams();
+  const user = useSelector((state) => state.user.user);
+  const { getShoeByIdCart } = useContext(CartContext);
+
   const getShoeById = async () => {
     try {
       const res = await axios.get(`http://localhost:5050/api/v1/shoe/${id}`);
@@ -18,9 +29,112 @@ const SingleShoe = () => {
     }
   };
 
+  const getAllShoes = async () => {
+    try {
+      const res = await axios.get(
+        `http://localhost:5050/api/v1/shoe/search?type=${shoes?.type}`
+      );
+      setSimilarShoes(res?.data?.slice(0, 4));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getCartItem = async () => {
+    try {
+      const res = await axios.get(
+        `http://localhost:5050/api/v1/cart/get?userId=${user?.user?._id}&prodId=${id}`,
+        {
+          headers: {
+            Authorization: user.token,
+          },
+        }
+      );
+      setCart(res?.data);
+      setCartFlag(res?.data.length !== 0);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     getShoeById();
-  }, []);
+  }, [id]);
+
+  useEffect(() => {
+    getCartItem();
+  }, [cartFlag, id, user?.user?._id]);
+
+  useEffect(() => {
+    getAllShoes();
+  }, [shoes]);
+
+  const handleAddToCart = async () => {
+    if (!user) {
+      return toast.error("Login first!");
+    }
+
+    if (qty === "") {
+      return toast.error("Please select quantity!");
+    }
+
+    const payload = {
+      userId: user?.user?._id,
+      prodId: shoes?._id,
+      title: shoes?.title,
+      mainImg: shoes?.title,
+      subOneImg: shoes.subOneImg,
+      subTwoImg: shoes.subTwoImg,
+      subThreeImg: shoes.subThreeImg,
+      subFourImg: shoes.subFourImg,
+      price: shoes.price,
+      discount: shoes.discount,
+      type: shoes.type,
+      desc: shoes.desc,
+      productStory: shoes.productStory,
+      countryOfOrigin: shoes.countryOfOrigin,
+      style: shoes.style,
+      qty,
+      size,
+      color: shoes.color,
+    };
+
+    try {
+      const res = await axios.post(
+        "http://localhost:5050/api/v1/cart/create",
+        payload,
+        {
+          headers: {
+            Authorization: user.token,
+          },
+        }
+      );
+
+      toast.success("Item added to cart successfully!");
+      getCartItem();
+      getShoeByIdCart();
+    } catch (error) {
+      console.log(error);
+      toast.error(error?.response?.data?.msg);
+    }
+  };
+
+  console.log(cart);
+
+  const deleteCartItem = async () => {
+    try {
+      await axios.delete(`http://localhost:5050/api/v1/cart/${cart[0]._id}`, {
+        headers: {
+          Authorization: user.token,
+        },
+      });
+      toast.success("Item removed from cart!");
+      getCartItem();
+      getShoeByIdCart();
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <section className=" w-full h-auto p-10">
@@ -54,6 +168,13 @@ const SingleShoe = () => {
           desc={shoes?.desc}
           style={shoes.style}
           color={shoes.color}
+          size={size}
+          setSize={setSize}
+          qty={qty}
+          setQty={setQty}
+          handleAddToCart={handleAddToCart}
+          deleteCartItem={deleteCartItem}
+          cartFlag={cartFlag}
         />
       </div>
 
@@ -71,7 +192,7 @@ const SingleShoe = () => {
       </div>
 
       <div className=" mt-10">
-        <ShowShoes compTitle={"YOU MAY ALSO LIKE"} />
+        <ShowShoes compTitle={"YOU MAY ALSO LIKE"} shoes={similarShoes} />
       </div>
     </section>
   );

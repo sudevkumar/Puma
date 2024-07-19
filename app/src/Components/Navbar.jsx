@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { navBar } from "../utils";
 import { FiSearch } from "react-icons/fi";
 import { GoHeartFill } from "react-icons/go";
@@ -8,11 +8,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { clearUser } from "../Redux/userSlice";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import axios from "axios";
+import { CartContext } from "../context/CartContext";
 
 const Navbar = () => {
   const [search, setsearch] = useState("");
+  const { cartNumber, setCartNumber } = useContext(CartContext);
   const user = useSelector((state) => state.user.user);
   const dispatch = useDispatch();
+
+  console.log(cartNumber);
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -73,7 +78,7 @@ const Navbar = () => {
         <div className=" relative cursor-pointer">
           <BsFillCartFill fill="white" size={25} title="Cart" />
           <div className=" absolute w-4 h-4 rounded-full bg-red-500 -top-2 -right-1 flex justify-center items-center text-[10px] font-semibold text-white ">
-            1
+            {cartNumber}
           </div>
         </div>
         {user === null ? (

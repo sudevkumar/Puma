@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   calculateDiscountedPrice,
   formatToINR,
@@ -8,8 +8,21 @@ import {
 import { GoHeartFill } from "react-icons/go";
 import { RxUpdate } from "react-icons/rx";
 
-const ProductDetails = ({ title, discount, price, desc, style, color }) => {
-  const [size, setSize] = useState("UK 3");
+const ProductDetails = ({
+  title,
+  discount,
+  price,
+  desc,
+  style,
+  color,
+  size,
+  setSize,
+  qty,
+  setQty,
+  handleAddToCart,
+  cartFlag,
+  deleteCartItem,
+}) => {
   return (
     <div className=" w-[35%] flex flex-col gap-3 ">
       <h1 className=" text-4xl font-semibold">{title}</h1>
@@ -28,6 +41,7 @@ const ProductDetails = ({ title, discount, price, desc, style, color }) => {
         <div className=" w-full h-auto grid grid-cols-5 gap-2 mt-3">
           {sizes?.map((s) => (
             <div
+              key={s}
               className={`w-[80px] h-[80px] ${
                 size === s ? " border-2 border-blue-700" : "border"
               } flex justify-center items-center text-[15px] cursor-pointer`}
@@ -43,16 +57,31 @@ const ProductDetails = ({ title, discount, price, desc, style, color }) => {
           name=""
           id=""
           className=" w-[22%] border-2 border-black h-[63px] rounded-sm"
+          onChange={(e) => setQty(e.target.value)}
         >
           <option value="">Qty</option>
           {quantity.map((q) => (
-            <option value={q}>{q}</option>
+            <option key={q} value={q}>
+              {q}
+            </option>
           ))}
         </select>
         <div className=" w-[75%] flex flex-col gap-2">
-          <button className=" w-full h-[63px] bg-black rounded-sm text-white text-[17px]  ">
-            ADD TO CART
-          </button>
+          {cartFlag ? (
+            <button
+              className=" w-full h-[63px] bg-red-600 rounded-sm text-white text-[17px]"
+              onClick={deleteCartItem}
+            >
+              REMOVE FROM CART
+            </button>
+          ) : (
+            <button
+              className=" w-full h-[63px] bg-black rounded-sm text-white text-[17px]"
+              onClick={handleAddToCart}
+            >
+              ADD TO CART
+            </button>
+          )}
 
           <button className=" w-full gap-2 h-[63px] bg-white rounded-sm border-2 border-black text-[17px] flex justify-center items-center  ">
             <GoHeartFill size={26} />
@@ -71,7 +100,7 @@ const ProductDetails = ({ title, discount, price, desc, style, color }) => {
       <div className="">
         <h3 className=" text-2xl font-semibold mb-4">Description</h3>
         <p className=" text-[15px] text-gray-500">{desc}</p>
-        <ul class="list-disc pl-5 mt-3">
+        <ul className="list-disc pl-5 mt-3">
           <li className="text-[17px] text-gray-500 font-light">
             Style : {style}
           </li>

@@ -29,7 +29,7 @@ const Home = () => {
     <section className=" p-[40px] w-full h-auto ">
       <h1 className=" text-3xl">All Products</h1>
 
-      <div className=" w-full h-6 mt-7 grid grid-cols-4 gap-4">
+      <div className=" w-full mt-7 grid grid-cols-4 gap-4">
         {shoes.map((shoe) => (
           <div className=" w-full h-auto ">
             <ImageSlider

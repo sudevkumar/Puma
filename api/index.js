@@ -6,6 +6,7 @@ const cors = require("cors");
 // Routers
 const authRouter = require("./routes/auth");
 const shoeRouter = require("./routes/shoe");
+const cartRouter = require("./routes/cart");
 
 const app = express();
 const corsOptions = {
@@ -29,6 +30,7 @@ app.use(express.json());
 app.use(cors(corsOptions));
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/shoe", shoeRouter);
+app.use("/api/v1/cart", cartRouter);
 
 app.listen(process.env.PORT, () => {
   connectDb();

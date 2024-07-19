@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const HeroBanner = () => {
   return (
@@ -13,17 +14,24 @@ const HeroBanner = () => {
         <h1 className="text-2xl mt-2">NEW STYLE ADDED</h1>
         <p className="">+ EXTRA 5% OFF ON ALL ONLINE PAYMENTS</p>
         <div className=" flex gap-2 mt-5">
-          <button className=" bg-white text-black w-[100px] h-[40px] text-[14px] font-bold">
-            For Him
-          </button>
+          <Link to={"showwithdiscount/men"}>
+            {" "}
+            <button className=" bg-white text-black w-[100px] h-[40px] text-[14px] font-bold">
+              For Him
+            </button>
+          </Link>
 
-          <button className=" bg-white text-black w-[100px] h-[40px] text-[14px] font-bold">
-            For Her
-          </button>
+          <Link to={"showwithdiscount/women"}>
+            <button className=" bg-white text-black w-[100px] h-[40px] text-[14px] font-bold">
+              For Her
+            </button>
+          </Link>
 
-          <button className=" bg-white text-black w-[100px] h-[40px] text-[14px] font-bold">
-            For Kid
-          </button>
+          <Link to={"showwithdiscount/women"}>
+            <button className=" bg-white text-black w-[100px] h-[40px] text-[14px] font-bold">
+              For Kid
+            </button>
+          </Link>
         </div>
       </div>
     </section>

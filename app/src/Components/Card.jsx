@@ -3,8 +3,15 @@ import ImageSlider from "./ImageSlider";
 import { calculateDiscountedPrice, formatToINR } from "../utils";
 
 const Card = ({ shoe, showNav }) => {
+  const scrollToTop = () => {
+    window.scrollTo({ top: "0", behavior: "smooth" });
+  };
   return (
-    <div key={shoe._id} className=" w-[400px] h-[400px] inline-block p-3">
+    <div
+      key={shoe._id}
+      className=" w-[380px] h-[400px] inline-block p-3"
+      onClick={scrollToTop}
+    >
       <ImageSlider
         images={[
           shoe?.mainImg,

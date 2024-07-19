@@ -5,11 +5,14 @@ import App from "./App";
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import { store } from "./Redux/store";
+import { CartProvider } from "./context/CartContext";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <BrowserRouter>
     <Provider store={store}>
-      <App />
+      <CartProvider>
+        <App />
+      </CartProvider>
     </Provider>
   </BrowserRouter>
 );
