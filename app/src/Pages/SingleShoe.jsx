@@ -82,7 +82,7 @@ const SingleShoe = () => {
       userId: user?.user?._id,
       prodId: shoes?._id,
       title: shoes?.title,
-      mainImg: shoes?.title,
+      mainImg: shoes?.mainImg,
       subOneImg: shoes.subOneImg,
       subTwoImg: shoes.subTwoImg,
       subThreeImg: shoes.subThreeImg,
@@ -118,8 +118,6 @@ const SingleShoe = () => {
       toast.error(error?.response?.data?.msg);
     }
   };
-
-  console.log(cart);
 
   const deleteCartItem = async () => {
     try {

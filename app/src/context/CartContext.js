@@ -19,7 +19,6 @@ const CartProvider = ({ children }) => {
         }
       );
       setCartNumber(res?.data?.length);
-      console.log(res?.data, "Navbar");
     } catch (error) {
       console.log(error);
     }
@@ -27,11 +26,15 @@ const CartProvider = ({ children }) => {
 
   useEffect(() => {
     getShoeByIdCart();
-  }, []);
+  }, [user?.user?._id, cartNumber]);
 
   return (
     <CartContext.Provider
-      value={{ cartNumber, setCartNumber, getShoeByIdCart }}
+      value={{
+        cartNumber,
+        setCartNumber,
+        getShoeByIdCart,
+      }}
     >
       {children}
     </CartContext.Provider>

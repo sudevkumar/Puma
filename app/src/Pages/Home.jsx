@@ -18,6 +18,10 @@ const Home = () => {
   useEffect(() => {
     getAllShoes();
   }, []);
+
+  useEffect(() => {
+    document.title = "Puma Home Page";
+  }, []);
   return (
     <>
       <HeroBanner />

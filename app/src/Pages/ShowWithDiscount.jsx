@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import Card from "../Components/Card";
+import ShowMsg from "../Components/ShowMsg";
 
 const ShowWithDiscount = () => {
   const { id } = useParams();
@@ -24,9 +25,7 @@ const ShowWithDiscount = () => {
     <section className=" p-[40px] w-full h-auto ">
       <h1 className=" text-4xl font-bold">Showing shoes for {id}</h1>
       {shoes.length === 0 ? (
-        <div className=" w-[full] h-[60vh] flex justify-center items-center">
-          <h1 className=" text-3xl font-semibold">No products found!</h1>
-        </div>
+        <ShowMsg msg="No Product Found!" />
       ) : (
         <div className="  w-full mt-7 grid grid-cols-4 gap-x-3 gap-y-3">
           {shoes?.map((shoe) => (

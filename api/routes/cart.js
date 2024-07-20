@@ -47,4 +47,14 @@ router.delete("/:id", verifyToken, async (req, res) => {
   }
 });
 
+//  Delete All Data From the Cart
+router.delete("/api/v1/cart/delete-all", async (req, res) => {
+  try {
+    await Cart.deleteMany({});
+    res.status(200).json({ message: "All cart items have been deleted." });
+  } catch (error) {
+    res.status(500).json({ message: "Error deleting cart items", error });
+  }
+});
+
 module.exports = router;

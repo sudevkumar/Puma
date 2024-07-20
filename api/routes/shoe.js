@@ -46,6 +46,22 @@ router.get("/search", async (req, res) => {
   }
 });
 
+// Get All New Shoes
+router.get("/recent", async (req, res) => {
+  try {
+    const sevenDaysAgo = new Date();
+    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+
+    const recentProducts = await Shoe.find({
+      createdAt: { $gte: sevenDaysAgo },
+    });
+
+    res.status(200).json(recentProducts);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching recent products", error });
+  }
+});
+
 // Get Shoe By Id
 
 router.get("/:id", async (req, res) => {
