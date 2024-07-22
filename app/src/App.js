@@ -14,6 +14,7 @@ import Cart from "./Pages/Cart";
 import Address from "./Pages/Address";
 import GoToCategory from "./Pages/GoToCategory";
 import Protected from "./Redux/Protected";
+import Order from "./Pages/Order";
 
 function App() {
   return (
@@ -54,6 +55,14 @@ function App() {
             </Protected>
           }
           path="/address"
+        />
+        <Route
+          element={
+            <Protected>
+              <Order />
+            </Protected>
+          }
+          path="/order"
         />
         <Route element={<SingleShoe />} path="/singleshoe/:id" />
         <Route element={<GoToCategory />} path="/category/:name" />

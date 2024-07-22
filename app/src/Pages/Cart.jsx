@@ -5,7 +5,7 @@ import ShowMsg from "../Components/ShowMsg";
 import { calculateDiscountedPrice, formatToINR } from "../utils";
 import { toast } from "react-toastify";
 import { CartContext } from "../context/CartContext";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
   const [cart, setCart] = useState([]);
@@ -97,7 +97,7 @@ const Cart = () => {
   return (
     <section className="  w-full h-auto p-[40px]">
       {cart.length === 0 ? (
-        <ShowMsg msg="Cart is empty!" />
+        <ShowMsg msg="Cart is empty!" wid="full" hig="60vh" />
       ) : (
         <div className="  w-[100%] mt-7 flex gap-3">
           <div className="w-[60%] flex flex-col gap-3">

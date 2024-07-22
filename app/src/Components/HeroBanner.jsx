@@ -27,7 +27,7 @@ const HeroBanner = () => {
             </button>
           </Link>
 
-          <Link to={"showwithdiscount/women"}>
+          <Link to={"showwithdiscount/kid"}>
             <button className=" bg-white text-black w-[100px] h-[40px] text-[14px] font-bold">
               For Kid
             </button>

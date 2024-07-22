@@ -20,18 +20,17 @@ const ShowWithDiscount = () => {
 
   useEffect(() => {
     getAllShoes();
+    document.title = `Puma ${id} shoes with discount 40%.`;
   }, []);
   return (
     <section className=" p-[40px] w-full h-auto ">
       <h1 className=" text-4xl font-bold">Showing shoes for {id}</h1>
       {shoes.length === 0 ? (
-        <ShowMsg msg="No Product Found!" />
+        <ShowMsg msg="No Product Found!" wid="full" hig="60vh" />
       ) : (
         <div className="  w-full mt-7 grid grid-cols-4 gap-x-3 gap-y-3">
           {shoes?.map((shoe) => (
-            <Link to={`/singleshoe/${shoe._id}`}>
-              <Card shoe={shoe} showNav={true} />
-            </Link>
+            <Card shoe={shoe} showNav={true} />
           ))}
         </div>
       )}

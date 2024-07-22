@@ -1,29 +1,31 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import Card from "../Components/Card";
+import ShowMsg from "../Components/ShowMsg";
 
 const GoToCategory = () => {
   const [shoe, setShoe] = useState([]);
+  const [filteredShoes, setFilteredShoes] = useState([]);
+  const [priceFilter, setPriceFilter] = useState("");
   const { name } = useParams();
 
   const getAllCategoryProduct = async () => {
     try {
+      let res;
       if (name === "New") {
-        const res = await axios.get("http://localhost:5050/api/v1/shoe/recent");
-        setShoe(res?.data);
+        res = await axios.get("http://localhost:5050/api/v1/shoe/recent");
       } else if (name === "Kids") {
-        const res = await axios.get(
-          `http://localhost:5050/api/v1/shoe/search?type=kid`
+        res = await axios.get(
+          "http://localhost:5050/api/v1/shoe/search?type=kid"
         );
-        console.log(res?.data);
-        setShoe(res?.data);
       } else {
-        const res = await axios.get(
+        res = await axios.get(
           `http://localhost:5050/api/v1/shoe/search?type=${name}`
         );
-        console.log(res?.data);
-        setShoe(res?.data);
       }
+      setShoe(res?.data);
+      setFilteredShoes(res?.data);
     } catch (error) {
       console.log(error);
     }
@@ -34,7 +36,108 @@ const GoToCategory = () => {
     document.title = `Puma Shoe's for ${name}`;
   }, [name]);
 
-  return <div>{name}</div>;
+  useEffect(() => {
+    applyPriceFilter();
+  }, [priceFilter, shoe]);
+
+  const handlePriceFilterChange = (e) => {
+    setPriceFilter(e.target.value);
+  };
+
+  const applyPriceFilter = () => {
+    let filtered = shoe;
+    if (priceFilter) {
+      const [min, max] = priceFilter.split("-").map(Number);
+      filtered = shoe.filter((sh) => {
+        const discountedPrice = sh.price - (sh.price * sh.discount) / 100;
+        return discountedPrice >= min && (max ? discountedPrice <= max : true);
+      });
+    }
+    setFilteredShoes(filtered);
+  };
+
+  return (
+    <div className="w-full h-full flex gap-3">
+      <div className="w-[20%] h-[90vh] bg-black p-7">
+        <h1 className="text-white text-2xl">Filter</h1>
+        <hr className="mt-3" />
+
+        <div className="mt-3">
+          <h1 className="text-white">Filter By price</h1>
+          <div className="flex gap-3 text-white p-2 items-center">
+            <input
+              type="radio"
+              name="price"
+              value="200-1000"
+              id="200"
+              onChange={handlePriceFilterChange}
+            />
+            <label htmlFor="200">200rs - 1000rs</label>
+          </div>
+          <div className="flex gap-3 text-white p-2 items-center">
+            <input
+              type="radio"
+              name="price"
+              value="1001-2000"
+              onChange={handlePriceFilterChange}
+              id="1001"
+            />
+            <label htmlFor="1001">1001rs - 2000rs</label>
+          </div>
+          <div className="flex gap-3 text-white p-2 items-center">
+            <input
+              type="radio"
+              name="price"
+              value="2001-3000"
+              onChange={handlePriceFilterChange}
+              id="2001"
+            />
+            <label htmlFor="2001">2001rs - 3000rs</label>
+          </div>
+          <div className="flex gap-3 text-white p-2 items-center">
+            <input
+              type="radio"
+              name="price"
+              value="3001-4000"
+              onChange={handlePriceFilterChange}
+              id="3001"
+            />
+            <label htmlFor="3001">3001rs - 4000rs</label>
+          </div>
+          <div className="flex gap-3 text-white p-2 items-center">
+            <input
+              type="radio"
+              name="price"
+              value="4001-5000"
+              onChange={handlePriceFilterChange}
+              id="4001"
+            />
+            <label htmlFor="4001">4001rs - 5000rs</label>
+          </div>
+          <div className="flex gap-3 text-white p-2 items-center">
+            <input
+              type="radio"
+              name="price"
+              value="5000-"
+              id="5000"
+              onChange={handlePriceFilterChange}
+            />
+            <label htmlFor="5000">More than 5000rs</label>
+          </div>
+        </div>
+      </div>
+
+      {filteredShoes.length === 0 ? (
+        <ShowMsg msg={"No product found!"} wid={"80%"} hig={"90vh"} />
+      ) : (
+        <div className="w-[80%] h-[90vh] p-7 grid grid-cols-3 overflow-scroll no-scrollbar">
+          {filteredShoes.map((sh) => (
+            <Card key={sh.id} shoe={sh} showNav={true} />
+          ))}
+        </div>
+      )}
+    </div>
+  );
 };
 
 export default GoToCategory;

@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { clearUser } from "../Redux/userSlice";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import axios from "axios";
+import { CiDeliveryTruck } from "react-icons/ci";
 import { CartContext } from "../context/CartContext";
 
 const Navbar = () => {
@@ -17,7 +17,6 @@ const Navbar = () => {
   const user = useSelector((state) => state.user.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { getShoeByIdCart } = useContext(CartContext);
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -82,6 +81,14 @@ const Navbar = () => {
             size={25}
             className=" cursor-pointer"
             title="Favourites"
+          />
+        </Link>
+        <Link to={"/order"}>
+          <CiDeliveryTruck
+            fill="white"
+            size={27}
+            className=" cursor-pointer"
+            title="Order"
           />
         </Link>
         <div className=" relative cursor-pointer">

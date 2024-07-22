@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 
-const ShowMsg = ({ msg }) => {
+const ShowMsg = ({ msg, wid, hig }) => {
   return (
-    <div className=" w-[full] h-[60vh] flex justify-center items-center">
+    <div className={` w-[${wid}] h-[${hig}] flex justify-center items-center`}>
       <h1 className=" text-3xl font-semibold">{msg}</h1>
     </div>
   );

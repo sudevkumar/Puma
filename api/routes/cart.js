@@ -40,17 +40,19 @@ router.get("/get", verifyToken, async (req, res) => {
 router.delete("/:id", verifyToken, async (req, res) => {
   try {
     await Cart.findByIdAndDelete(req.params.id);
-    res.status(200).json("Mobile has been deleted!");
+    res.status(200).json("Shoe has been deleted!");
   } catch (error) {
     res.status(500).json(error);
     console.log(error);
   }
 });
 
-//  Delete All Data From the Cart
-router.delete("/api/v1/cart/delete-all", async (req, res) => {
+//  Delete All Data From the Cart Using User Id
+router.delete("/delete/:userId", async (req, res) => {
+  const userId = req.params.userId;
   try {
-    await Cart.deleteMany({});
+    await Cart.deleteMany({ userId: userId });
+    console.log("Deleted");
     res.status(200).json({ message: "All cart items have been deleted." });
   } catch (error) {
     res.status(500).json({ message: "Error deleting cart items", error });

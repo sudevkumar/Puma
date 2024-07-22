@@ -72,3 +72,11 @@ export const sizes = [
 ];
 
 export const quantity = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
+
+export const xNumebr = (num) => {
+  const strNum = num.toString();
+  if (strNum.length !== 16) {
+    return "Invalid number length";
+  }
+  return "XXXXXXXXXXXX" + strNum.slice(-4);
+};
