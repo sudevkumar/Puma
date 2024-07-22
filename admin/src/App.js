@@ -8,6 +8,7 @@ import CreateAShoePost from "./pages/CreateAShoePost";
 import Home from "./pages/Home";
 import PrivateRoute from "./utils/PrivateRoute";
 import UpdateShoe from "./pages/UpdateShoe";
+import EditOrder from "./pages/EditOrder";
 
 function App() {
   return (
@@ -23,6 +24,15 @@ function App() {
           element={
             <PrivateRoute>
               <CreateAShoePost />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/edit"
+          element={
+            <PrivateRoute>
+              <EditOrder />
             </PrivateRoute>
           }
         />

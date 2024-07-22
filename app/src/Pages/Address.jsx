@@ -7,7 +7,6 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
 const Address = () => {
-  const { getShoeByIdCart } = useContext(CartContext);
   const [cart, setCart] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const user = useSelector((state) => state.user.user);

@@ -68,7 +68,6 @@ function App() {
         <Route element={<GoToCategory />} path="/category/:name" />
         <Route element={<ShowWithDiscount />} path="/showwithdiscount/:id" />
       </Routes>
-      <Footer />
     </div>
   );
 }

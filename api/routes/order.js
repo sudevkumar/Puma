@@ -33,4 +33,36 @@ router.get("/get", async (req, res) => {
   }
 });
 
+// Get All order
+router.get("/", async (req, res) => {
+  try {
+    const cart = await Order.find().sort({
+      createdAt: -1,
+    });
+    res.status(200).json(cart);
+  } catch (error) {
+    res.status(500).json(error);
+    console.log(error);
+  }
+});
+
+// edit order
+
+router.patch("/:id", verifyToken, async (req, res) => {
+  try {
+    const updatedShoe = await Order.findByIdAndUpdate(
+      req.params.id,
+      {
+        $set: req.body,
+      },
+      { new: true }
+    );
+
+    res.status(200).json(updatedShoe);
+  } catch (error) {
+    res.status(500).json(error);
+    console.log(error);
+  }
+});
+
 module.exports = router;

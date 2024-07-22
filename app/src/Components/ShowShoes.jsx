@@ -5,38 +5,46 @@ import Card from "./Card";
 import { Link } from "react-router-dom";
 
 const ShowShoes = ({ shoes, compTitle }) => {
-  const leftSlider = () => {
+  const resLeftSlider = () => {
     var slider = document.getElementById("slider");
-    slider.scrollLeft = slider.scrollLeft - 400;
+    slider.scrollLeft = slider.scrollLeft - 380;
   };
 
-  const rightSlider = () => {
+  const resRightSlider = () => {
     var slider = document.getElementById("slider");
-    slider.scrollLeft = slider.scrollLeft + 400;
+    slider.scrollLeft = slider.scrollLeft + 380;
   };
 
   return (
-    <section className=" w-[97%] h-auto mx-auto mb-10">
-      <h1 className=" text-3xl font-semibold">{compTitle}</h1>
-      <div className=" w-full relative flex items-center mt-5 ">
-        <div className=" w-[40px] h-[40px] flex justify-center items-center rounded-full cursor-pointer bg-black bg-opacity-15">
-          <MdChevronLeft size={33} onClick={leftSlider} />
+    <>
+      <section className="w-[97%] h-auto mx-auto lg:relative lg:mb-6 lg:top-0 absolute top-[1700px]  ">
+        <h1 className="text-3xl font-semibold mb-4">{compTitle}</h1>
+        <div className="w-full relative flex items-center mt-5">
+          <div
+            className="w-[40px] h-[40px] flex justify-center items-center rounded-full cursor-pointer bg-black bg-opacity-15"
+            onClick={resLeftSlider}
+          >
+            <MdChevronLeft size={33} />
+          </div>
+          <div
+            id="slider"
+            className="animate w-full h-full overflow-x-scroll whitespace-nowrap scroll-smooth scrollbar-hide"
+          >
+            {shoes?.map((shoe) => (
+              <Link key={shoe?._id} to={`/singleshoe/${shoe?._id}`}>
+                <Card shoe={shoe} showNav={false} />
+              </Link>
+            ))}
+          </div>
+          <div
+            className="w-[40px] h-[40px] flex justify-center items-center rounded-full cursor-pointer bg-black bg-opacity-15"
+            onClick={resRightSlider}
+          >
+            <MdChevronRight size={33} />
+          </div>
         </div>
-        <div
-          id="slider"
-          className="animate w-full h-full overflow-x-scroll scroll whitespace-nowrap scroll-smooth"
-        >
-          {shoes?.slice(0, 7).map((shoe) => (
-            <Link to={`/singleshoe/${shoe?._id}`}>
-              <Card shoe={shoe} showNav={false} />
-            </Link>
-          ))}
-        </div>
-        <div className=" w-[40px] h-[40px] flex justify-center items-center rounded-full cursor-pointer bg-black bg-opacity-15">
-          <MdChevronRight onClick={rightSlider} size={33} />
-        </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 };
 

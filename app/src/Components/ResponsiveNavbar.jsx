@@ -26,9 +26,13 @@ const ResponsiveNavbar = () => {
     toast.success("Logout successful!");
   };
 
+  const scrollToTop = () => {
+    window.scrollTo({ top: "0", behavior: "smooth" });
+  };
+
   return (
     <>
-      <nav className=" w-full h-[70px] bg-black flex fixed lg:hidden">
+      <nav className=" w-full h-[70px] bg-black flex fixed lg:hidden z-20">
         <img
           src="https://i.pinimg.com/564x/87/02/6a/87026affe8b9ae802ebe49f594a29228.jpg"
           alt=""
@@ -54,7 +58,10 @@ const ResponsiveNavbar = () => {
           </form>
           <div
             className=" w-[38px] h-[38px] rounded-md border border-white flex justify-center items-center"
-            onClick={() => setOpen(true)}
+            onClick={() => {
+              setOpen(true);
+              scrollToTop();
+            }}
           >
             <RxHamburgerMenu color="white" size={25} />
           </div>
@@ -63,7 +70,7 @@ const ResponsiveNavbar = () => {
 
       {/* {open && ( */}
       <div
-        className={`absolute ${
+        className={`absolute z-50 ${
           open ? "top-0 left-[0]" : "top-0 -left-[100%]"
         } w-full h-screen overflow-scroll bg-black transition-all duration-300`}
       >
@@ -113,7 +120,14 @@ const ResponsiveNavbar = () => {
           <ul>
             {navBar.map((nav, i) => (
               <div key={i}>
-                <li className=" text-[19px] m-4">{nav}</li>
+                <Link to={`/category/${nav}`}>
+                  <li
+                    className=" text-[19px] m-4"
+                    onClick={() => setOpen(false)}
+                  >
+                    {nav}
+                  </li>
+                </Link>
                 <hr />
               </div>
             ))}

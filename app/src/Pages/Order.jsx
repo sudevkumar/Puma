@@ -2,13 +2,12 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import ShowMsg from "../Components/ShowMsg";
-import { formatToINR, xNumebr } from "../utils";
+import { calculateDiscountedPrice, formatToINR, xNumebr } from "../utils";
 import { BiUpArrow, BiDownArrow } from "react-icons/bi";
 
 const Order = () => {
   const [order, setOrder] = useState([]);
   const user = useSelector((state) => state.user.user);
-  console.log(user?.user?._id);
 
   const [id, setId] = useState("");
   const [show, setShow] = useState(false);
@@ -95,7 +94,7 @@ const Order = () => {
                         <h1 className=" text-[20px]">Qty : {ele.qty}</h1>
                         <h1 className=" text-[20px]">
                           {" "}
-                          {formatToINR(ele.price)}
+                          {calculateDiscountedPrice(ele.price, ele.discount)}
                         </h1>
 
                         <h1 className=" text-[20px]">{ele.type}</h1>

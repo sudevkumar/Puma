@@ -7,6 +7,11 @@ export const navBar = [
     title: "SHOW ALL PRODUCT",
     link: "/",
   },
+
+  {
+    title: "EDIT ALL PRODUCT",
+    link: "/edit",
+  },
 ];
 
 export const validatePassword = (pass) => {
@@ -30,4 +35,12 @@ export const formatToINR = (amount) => {
     currency: "INR",
     minimumFractionDigits: 0,
   }).format(amount);
+};
+
+export const xNumebr = (num) => {
+  const strNum = num.toString();
+  if (strNum.length !== 16) {
+    return "Invalid number length";
+  }
+  return "XXXXXXXXXXXX" + strNum.slice(-4);
 };
