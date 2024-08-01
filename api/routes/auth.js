@@ -3,148 +3,106 @@ const User = require("../model/UserModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-// create router
+// Create router
 const router = express.Router();
+
+// Helper function for user creation
+const createUser = async (
+  { username, email, password, phone, userimg, type },
+  res
+) => {
+  try {
+    const existingUser = await User.findOne({
+      $or: [{ username }, { email }, { phone }],
+    });
+    if (existingUser) {
+      return res.status(409).json({
+        msg: "Username, email, or phone number already exists!",
+      });
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    const hashPassword = await bcrypt.hash(password, salt);
+    const newUser = new User({
+      username,
+      userimg,
+      email,
+      password: hashPassword,
+      phone,
+      type,
+    });
+
+    const savedUser = await newUser.save();
+    return res.status(201).json(savedUser);
+  } catch (error) {
+    console.error("Error creating user:", error);
+    return res.status(500).json({ message: "Server error", error });
+  }
+};
 
 // Register
 router.post("/register", async (req, res) => {
-  try {
-    const { username, email, password, phone, userimg } = req.body;
-    const userName = await User.findOne({ username: req.body.username });
-    if (userName) {
-      return res.status(401).json({
-        msg: "Username already exist!",
-      });
-    }
-
-    const eMail = await User.findOne({ email: req.body.email });
-    if (eMail) {
-      return res.status(401).json({
-        msg: "Email already exist!",
-      });
-    }
-
-    const phoneNumber = await User.findOne({ phone: req.body.phone });
-    if (phoneNumber) {
-      return res.status(401).json({
-        msg: "Phone number already exist!",
-      });
-    }
-
-    const salt = await bcrypt.genSalt(10);
-    const hashPassword = await bcrypt.hashSync(password, salt);
-    const newUser = new User({
-      username,
-      userimg,
-      email,
-      password: hashPassword,
-      phone,
-      type: false,
-    });
-    const savedUser = await newUser.save();
-    res.status(200).json(savedUser);
-  } catch (error) {
-    console.log(error);
-    res.status(500).json(error);
-  }
+  createUser({ ...req.body, type: false }, res);
 });
 
+// Register Puma user
 router.post("/registerpuma", async (req, res) => {
-  try {
-    const { username, email, password, phone, userimg } = req.body;
-    const userName = await User.findOne({ username: req.body.username });
-    if (userName) {
-      return res.status(401).json({
-        msg: "Username already exist!",
-      });
-    }
-
-    const eMail = await User.findOne({ email: req.body.email });
-    if (eMail) {
-      return res.status(401).json({
-        msg: "Email already exist!",
-      });
-    }
-
-    const phoneNumber = await User.findOne({ phone: req.body.phone });
-    if (phoneNumber) {
-      return res.status(401).json({
-        msg: "Phone number already exist!",
-      });
-    }
-
-    const salt = await bcrypt.genSalt(10);
-    const hashPassword = await bcrypt.hashSync(password, salt);
-    const newUser = new User({
-      username,
-      userimg,
-      email,
-      password: hashPassword,
-      phone,
-      type: true,
-    });
-    const savedUser = await newUser.save();
-    res.status(200).json(savedUser);
-  } catch (error) {
-    console.log(error);
-    res.status(500).json(error);
-  }
+  createUser({ ...req.body, type: true }, res);
 });
 
 // Login
 router.post("/login", async (req, res) => {
   try {
-    // Finding User
     const user = await User.findOne({ username: req.body.username });
     if (!user) {
-      return res.status(404).json("User not found!");
+      return res.status(404).json({ message: "User not found!" });
     }
 
-    // Compare password
     const match = await bcrypt.compare(req.body.password, user.password);
     if (!match) {
-      return res.status(401).json("Wrong credentials!");
+      return res.status(401).json({ message: "Wrong credentials!" });
     }
 
-    // Creating token
     const token = jwt.sign(
       { _id: user._id, username: user.username, email: user.email },
-      process.env.SECRET
+      process.env.SECRET,
+      { expiresIn: "1h" } // Set token expiration
     );
-    res.status(200).send({ user, token });
+
+    res.status(200).json({ user, token });
   } catch (error) {
-    console.log(error);
-    res.status(500).json(err);
+    console.error("Error during login:", error);
+    res.status(500).json({ message: "Server error", error });
   }
 });
 
+// Login Puma user
 router.post("/loginpuma", async (req, res) => {
   try {
-    // Finding User
     const user = await User.findOne({ username: req.body.username });
     if (!user) {
-      return res.status(404).json("User not found!");
+      return res.status(404).json({ message: "User not found!" });
     }
 
     if (user.type !== true) {
-      return res.status(404).json("You are not authozied to login!");
+      return res.status(403).json({ message: "Unauthorized access!" });
     }
 
-    // Compare password
     const match = await bcrypt.compare(req.body.password, user.password);
     if (!match) {
-      return res.status(401).json("Wrong credentials!");
+      return res.status(401).json({ message: "Wrong credentials!" });
     }
 
-    // Creating token
     const token = jwt.sign(
       { _id: user._id, username: user.username, email: user.email },
-      process.env.SECRET
+      process.env.SECRET,
+      { expiresIn: "1h" } // Set token expiration
     );
-    res.status(200).send({ user, token });
+
+    res.status(200).json({ user, token });
   } catch (error) {
-    console.log(error);
-    res.status(500).json(err);
+    console.error("Error during login:", error);
+    res.status(500).json({ message: "Server error", error });
   }
 });
 

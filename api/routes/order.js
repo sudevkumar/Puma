@@ -3,65 +3,64 @@ const verifyToken = require("../middleware/verifyToken");
 const Order = require("../model/OrderModel");
 const router = express.Router();
 
-// Create a cart post
+// Create a new order
 router.post("/create", async (req, res) => {
   try {
-    const newPost = new Order(req.body);
-    const savePost = await newPost.save();
-    res.status(200).json(savePost);
+    const newOrder = new Order(req.body);
+    const savedOrder = await newOrder.save();
+    res.status(201).json(savedOrder);
   } catch (error) {
-    res.status(500).json(error);
-    console.log(error);
+    console.error("Error creating order:", error);
+    res.status(500).json({ message: "Server error", error });
   }
 });
 
-router.get("/get", async (req, res) => {
-  const query = req.query;
-  let filter = {};
-
-  Object.keys(query).forEach((key) => {
-    filter[key] = { $regex: new RegExp(query[key], "i") }; // 'i' makes it case-insensitive
-  });
+// Get orders based on query
+router.get("/get", verifyToken, async (req, res) => {
   try {
-    const cart = await Order.find(filter).sort({
-      createdAt: -1,
+    const query = req.query;
+    let filter = {};
+
+    Object.keys(query).forEach((key) => {
+      filter[key] = { $regex: new RegExp(query[key], "i") }; // Case-insensitive search
     });
-    res.status(200).json(cart);
+
+    const orders = await Order.find(filter).sort({ createdAt: -1 });
+    res.status(200).json(orders);
   } catch (error) {
-    res.status(500).json(error);
-    console.log(error);
+    console.error("Error fetching orders:", error);
+    res.status(500).json({ message: "Server error", error });
   }
 });
 
-// Get All order
-router.get("/", async (req, res) => {
+// Get all orders
+router.get("/", verifyToken, async (req, res) => {
   try {
-    const cart = await Order.find().sort({
-      createdAt: -1,
-    });
-    res.status(200).json(cart);
+    const orders = await Order.find().sort({ createdAt: -1 });
+    res.status(200).json(orders);
   } catch (error) {
-    res.status(500).json(error);
-    console.log(error);
+    console.error("Error fetching all orders:", error);
+    res.status(500).json({ message: "Server error", error });
   }
 });
 
-// edit order
-
+// Update an order
 router.patch("/:id", verifyToken, async (req, res) => {
   try {
-    const updatedShoe = await Order.findByIdAndUpdate(
+    const updatedOrder = await Order.findByIdAndUpdate(
       req.params.id,
-      {
-        $set: req.body,
-      },
+      { $set: req.body },
       { new: true }
     );
 
-    res.status(200).json(updatedShoe);
+    if (!updatedOrder) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+
+    res.status(200).json(updatedOrder);
   } catch (error) {
-    res.status(500).json(error);
-    console.log(error);
+    console.error("Error updating order:", error);
+    res.status(500).json({ message: "Server error", error });
   }
 });
 

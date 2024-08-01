@@ -3,16 +3,13 @@ const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const cors = require("cors");
 
-// Routers
-const authRouter = require("./routes/auth");
-const shoeRouter = require("./routes/shoe");
-const cartRouter = require("./routes/cart");
-const orderRouter = require("./routes/order");
+// Load environment variables
+dotenv.config();
 
 const app = express();
 const corsOptions = {
-  origin: true, //included origin as true
-  credentials: true, //included credentials as true
+  origin: true,
+  credentials: true,
 };
 
 // Connect to DB
@@ -21,20 +18,33 @@ const connectDb = async () => {
     await mongoose.connect(process.env.MONGO_URL);
     console.log("Connected to Database.");
   } catch (error) {
-    console.log(error);
+    console.error("Database connection error:", error);
   }
 };
 
 // Middleware
-dotenv.config();
 app.use(express.json());
 app.use(cors(corsOptions));
+
+// Basic route
+app.get("/", (req, res) => {
+  res.send("Hello, Vercel!");
+});
+
+// Import and use routers
+const authRouter = require("./routes/auth");
+const shoeRouter = require("./routes/shoe");
+const cartRouter = require("./routes/cart");
+const orderRouter = require("./routes/order");
+
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/shoe", shoeRouter);
 app.use("/api/v1/cart", cartRouter);
 app.use("/api/v1/order", orderRouter);
 
-app.listen(process.env.PORT, () => {
+// Start the server
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
   connectDb();
-  console.log("App is running on port" + " " + process.env.PORT);
+  console.log(`App is running on port ${PORT}`);
 });

@@ -1,17 +1,21 @@
 const jwt = require("jsonwebtoken");
-// var LocalStorage = require("node-localstorage").LocalStorage;
-// localStorage = new LocalStorage("./scratch");
 
 const verifyToken = (req, res, next) => {
-  const token = req.headers.authorization;
-  console.log(token);
-  if (!token) {
-    return res.status(401).json("You are not authenticated!");
+  const authHeader = req.headers.authorization;
+
+  if (!authHeader) {
+    return res.status(401).json({ message: "Authorization header is missing" });
   }
 
-  jwt.verify(token, process.env.SECRET, async (err, data) => {
+  const token = authHeader.split(" ")[1];
+
+  if (!token) {
+    return res.status(401).json({ message: "Token is missing" });
+  }
+
+  jwt.verify(token, process.env.SECRET, (err, data) => {
     if (err) {
-      return res.status(403).json("Token is not valid!");
+      return res.status(403).json({ message: "Invalid or expired token" });
     }
 
     req.userId = data.id;
