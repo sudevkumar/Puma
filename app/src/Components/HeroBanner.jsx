@@ -37,11 +37,11 @@ const HeroBanner = () => {
         </div>
       </section>
 
-      <section className=" w-full h-[85vh] absolute top-[70px] lg:hidden">
+      <section className=" w-full h-[85vh] lg:hidden ">
         <img
           src="https://cdn.sanity.io/images/qa41whrn/prod/35ff63a6b064ad2744e92eaa393abb6a9a1d0122-1536x1536.jpg?w=720&q=80&auto=format"
           alt=""
-          className=" w-full h-full object-cover"
+          className=" w-full h-full "
         />
 
         <div className=" w-full flex flex-col items-center ">

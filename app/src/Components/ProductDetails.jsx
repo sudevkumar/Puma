@@ -24,8 +24,10 @@ const ProductDetails = ({
   deleteCartItem,
 }) => {
   return (
-    <div className=" w-[35%] flex flex-col gap-3 ">
-      <h1 className=" text-4xl font-semibold">{title}</h1>
+    <div className=" w-full lg:w-[35%] flex flex-col gap-3 ">
+      <h1 className=" text-2xl md:text-3xl lg:text-4xl font-semibold">
+        {title}
+      </h1>
       <div className=" w-[80px] h-[27px] font-bold rounded-md flex justify-center items-center bg-red-600 text-white text-[12px]">
         -{discount}%
       </div>
@@ -35,7 +37,7 @@ const ProductDetails = ({
       <h2 className=" text-xl font-semibold text-red-600 line-through">
         {formatToINR(price, discount)}
       </h2>
-      <hr className=" my-16" />
+      <hr className=" my-4  md:my-8 lg:my-16" />
       <div className="">
         <h3 className=" text-2xl font-semibold">Size</h3>
         <div className=" w-full h-auto grid grid-cols-5 gap-2 mt-3">
@@ -82,20 +84,15 @@ const ProductDetails = ({
               ADD TO CART
             </button>
           )}
-
-          <button className=" w-full gap-2 h-[63px] bg-white rounded-sm border-2 border-black text-[17px] flex justify-center items-center  ">
-            <GoHeartFill size={26} />
-            ADD TO WISHLIST
-          </button>
         </div>
       </div>
 
-      <h1 className=" text-[19px] text-gray-500 font-semibold flex h-6 mt-3 items-center gap-4">
+      <h1 className=" md:text-[17px] lg:text-[19px] text-gray-500 font-semibold flex h-6 mt-3 items-center gap-4">
         <RxUpdate size={22} />
         Free returns on all qualifying orders.
       </h1>
 
-      <hr className="my-10" />
+      <hr className=" my-3 md:my-5 lg:my-10" />
 
       <div className="">
         <h3 className=" text-2xl font-semibold mb-4">Description</h3>

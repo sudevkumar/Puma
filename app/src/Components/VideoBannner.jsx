@@ -20,7 +20,7 @@ const VideoBannner = () => {
             </div>
           </div>
 
-          <div className=" w-[750px] h-[400px] absolute top-[340px] z-50">
+          <div className=" w-[750px] h-[400px] absolute top-[340px] z-20">
             <video
               className="h-full w-[750px] z-50 "
               autoplay="true"
@@ -39,7 +39,7 @@ const VideoBannner = () => {
         </div>
       </section>
 
-      <section className="  w-full h-auto lg:hidden absolute top-[650px] ">
+      <section className="  w-full h-auto lg:hidden mt-[180px]">
         <img
           src="https://cdn.sanity.io/images/qa41whrn/prod/57b628c688021950aac02b0eae07b9bdb81de7f5-1536x1536.jpg?w=2160&q=80&auto=format"
           alt=""

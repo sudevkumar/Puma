@@ -17,8 +17,10 @@ const ShowShoes = ({ shoes, compTitle }) => {
 
   return (
     <>
-      <section className="w-[97%] h-auto mx-auto lg:relative lg:mb-6 lg:top-0 absolute top-[1700px]  ">
-        <h1 className="text-3xl font-semibold mb-4">{compTitle}</h1>
+      <section className="w-[97%] h-auto mx-auto lg:relative lg:mb-6 lg:top-0 ">
+        <h1 className=" text-2xl lg:text-3xl font-semibold mb-4 px-1 lg:px-3">
+          {compTitle}
+        </h1>
         <div className="w-full relative flex items-center mt-5">
           <div
             className="w-[40px] h-[40px] flex justify-center items-center rounded-full cursor-pointer bg-black bg-opacity-15"

@@ -3,6 +3,9 @@ import VideoBannner from "../Components/VideoBannner";
 import ShowShoes from "../Components/ShowShoes";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import Footer from "../Components/Footer";
+import Navbar from "../Components/Navbar";
+import ResponsiveNavbar from "../Components/ResponsiveNavbar";
 
 const Home = () => {
   const [shoes, setShoes] = useState([]);
@@ -24,9 +27,16 @@ const Home = () => {
   }, []);
   return (
     <>
-      <HeroBanner />
-      <VideoBannner />
-      <ShowShoes shoes={shoes} compTitle="PUMA SPOTLIGHT" />
+      <Navbar />
+      <ResponsiveNavbar />
+      <section className=" w-full h-auto absolute top-[70px] lg:top-[80px] ">
+        <HeroBanner />
+        <VideoBannner />
+        <ShowShoes shoes={shoes} compTitle="PUMA SPOTLIGHT" />
+        <Footer />
+      </section>
+
+      {/* <Footer /> */}
     </>
   );
 };

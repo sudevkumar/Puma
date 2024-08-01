@@ -20,9 +20,7 @@ const Navbar = () => {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    setsearch("");
-    console.log(search);
-    alert(search);
+    navigate(`/search/${search}`);
   };
 
   const handleLogOut = () => {
@@ -33,7 +31,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className=" w-[100%] hidden h-[80px] bg-black lg:flex ">
+    <nav className=" fixed w-[100%] h-[80px] bg-black lg:flex hidden z-50">
       <div className=" w-[60%] flex px-5  text-white hover:text-gray-400 gap-4 items-center">
         <img
           src="https://i.pinimg.com/564x/87/02/6a/87026affe8b9ae802ebe49f594a29228.jpg"
@@ -75,14 +73,6 @@ const Navbar = () => {
             <FiSearch title="Search" />
           </button>
         </form>
-        <Link to={""}>
-          <GoHeartFill
-            fill="white"
-            size={25}
-            className=" cursor-pointer"
-            title="Favourites"
-          />
-        </Link>
         <Link to={"/order"}>
           <CiDeliveryTruck
             fill="white"
@@ -99,6 +89,7 @@ const Navbar = () => {
             </div>
           </Link>
         </div>
+
         {user === null ? (
           <Link to={"/login"}>
             <FaUserAlt

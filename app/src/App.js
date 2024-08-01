@@ -15,13 +15,12 @@ import Address from "./Pages/Address";
 import GoToCategory from "./Pages/GoToCategory";
 import Protected from "./Redux/Protected";
 import Order from "./Pages/Order";
+import SearchProduct from "./Pages/SearchProduct";
 
 function App() {
   return (
     <div className=" w-full">
       <ToastContainer />
-      <Navbar />
-      <ResponsiveNavbar />
       <Routes>
         <Route
           element={
@@ -67,6 +66,7 @@ function App() {
         <Route element={<SingleShoe />} path="/singleshoe/:id" />
         <Route element={<GoToCategory />} path="/category/:name" />
         <Route element={<ShowWithDiscount />} path="/showwithdiscount/:id" />
+        <Route element={<SearchProduct />} path="/search/:id" />
       </Routes>
     </div>
   );

@@ -14,7 +14,7 @@ const Footer = () => {
   return (
     <>
       {" "}
-      <section className=" w-full h-[60vh] bg-black text-white p-[44px] hidden lg:block">
+      <section className=" w-full h-auto bg-black text-white p-[44px] hidden lg:block">
         <div className=" w-full flex">
           <div className=" px-10 pb-10 w-[50%]">
             <h1 className=" text-xl font-semibold">Support</h1>
@@ -76,7 +76,7 @@ const Footer = () => {
       </section>
       {/* Responsive */}
       <section
-        className={` w-full h-auto bg-black text-white p-[44px] lg:hidden`}
+        className={` w-full h-auto bg-black text-white p-[44px] lg:hidden mt-20`}
       >
         <div className=" w-full flex">
           <div className=" px-1 pb-1 w-[100%]">
